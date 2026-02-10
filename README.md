@@ -42,6 +42,16 @@ To learn more about developing your project with Expo, look at the following res
 - [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
 - [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
+## Deployment
+
+### Vercel (Web)
+
+1.  Install Vercel CLI: `npm i -g vercel`
+2.  Run build: `npm run build:web`
+3.  Deploy: `vercel`
+
+The project is configured to output the static web build to the `web/` directory, which Vercel is configured to serve via `vercel.json`.
+
 ## Join the community
 
 Join our community of developers creating universal apps.
