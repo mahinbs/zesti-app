@@ -17,7 +17,7 @@ export default function HomeScreen() {
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
-      <View className="px-5 py-3 flex-row justify-between items-center bg-white/70 backdrop-blur-xl sticky top-0 z-50 border-b border-white/20">
+      <View className="px-5  py-3 flex-row justify-between items-center bg-white/70 backdrop-blur-xl sticky top-0 z-50 border-b border-white/20">
         <View className="flex-row items-center gap-3">
           <View className="bg-blue-50/80 p-2.5 rounded-full border border-blue-100 shadow-sm shadow-blue-100/50 backdrop-blur-sm">
             <MapPin size={20} color="#0EA5E9" fill="#0EA5E9" fillOpacity={0.2} />
