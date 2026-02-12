@@ -2,6 +2,28 @@ export interface User {
     id: string;
     name: string;
     avatar: string;
+    status?: "online" | "eating" | "offline";
+    lastActive?: string;
+}
+
+export interface Story {
+    id: string;
+    user: User;
+    image: string;
+    cafeName?: string;
+    timestamp: string;
+}
+
+export interface Activity {
+    id: string;
+    user: User;
+    type: "ordered" | "visited" | "liked" | "review";
+    cafe: Cafe;
+    foodItem?: FoodItem;
+    timestamp: string;
+    likes: number;
+    comments: number;
+    image?: string; // photo of the food/cafe
 }
 
 export interface FoodItem {
@@ -26,7 +48,10 @@ export interface Cafe {
     distance: string; // e.g. "1.2 km"
     rating: number;
     image: string;
-    loyaltyProgram: {
+    coverImage?: string;
+    followers: number;
+    followed: boolean;
+    loyaltyProgram?: {
         type: "visits" | "points";
         target: number;
         current?: number; // for user context
@@ -41,6 +66,13 @@ export const CURRENT_USER: User = {
     avatar: "https://i.pravatar.cc/150?u=u1",
 };
 
+export const MOCK_USERS: User[] = [
+    { id: "u2", name: "Sarah", avatar: "https://i.pravatar.cc/150?u=u2", status: "eating" },
+    { id: "u3", name: "Mike", avatar: "https://i.pravatar.cc/150?u=u3", status: "online" },
+    { id: "u4", name: "Jessica", avatar: "https://i.pravatar.cc/150?u=u4", status: "offline" },
+    { id: "u5", name: "David", avatar: "https://i.pravatar.cc/150?u=u5", status: "eating" },
+];
+
 export const MOCK_CAFES: Cafe[] = [
     {
         id: "c1",
@@ -48,6 +80,8 @@ export const MOCK_CAFES: Cafe[] = [
         address: "123 Main St, Downtown",
         distance: "0.8 km",
         rating: 4.8,
+        followers: 1250,
+        followed: true,
         image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=2600&auto=format&fit=crop",
         loyaltyProgram: {
             type: "visits",
@@ -67,10 +101,7 @@ export const MOCK_CAFES: Cafe[] = [
                 socialProof: {
                     type: "friends",
                     message: "Sarah & 2 others ordered this",
-                    users: [
-                        { id: 'u2', name: 'Sarah', avatar: 'https://i.pravatar.cc/150?u=u2' },
-                        { id: 'u3', name: 'Mike', avatar: 'https://i.pravatar.cc/150?u=u3' }
-                    ]
+                    users: [MOCK_USERS[0], MOCK_USERS[1]]
                 }
             },
             {
@@ -94,6 +125,8 @@ export const MOCK_CAFES: Cafe[] = [
         address: "456 Market Rd",
         distance: "1.5 km",
         rating: 4.6,
+        followers: 890,
+        followed: false,
         image: "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=2600&auto=format&fit=crop",
         loyaltyProgram: {
             type: "points",
@@ -123,6 +156,8 @@ export const MOCK_CAFES: Cafe[] = [
         address: "789 Park Ave",
         distance: "2.2 km",
         rating: 4.9,
+        followers: 2100,
+        followed: true,
         image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=2600&auto=format&fit=crop",
         loyaltyProgram: {
             type: "visits",
@@ -131,6 +166,45 @@ export const MOCK_CAFES: Cafe[] = [
             reward: "Free Sushi Roll",
         },
         menu: []
+    }
+];
+
+export const MOCK_STORIES: Story[] = [
+    { id: "s1", user: MOCK_USERS[0], image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80", cafeName: "The Grind", timestamp: "10m ago" },
+    { id: "s2", user: MOCK_USERS[3], image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80", cafeName: "Burger & Brew", timestamp: "35m ago" },
+];
+
+export const FRIENDS_ACTIVITIES: Activity[] = [
+    {
+        id: "a1",
+        user: MOCK_USERS[0],
+        type: "ordered",
+        cafe: MOCK_CAFES[0],
+        foodItem: MOCK_CAFES[0].menu[0],
+        timestamp: "5 min ago",
+        likes: 12,
+        comments: 2,
+        image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=2600&auto=format&fit=crop"
+    },
+    {
+        id: "a2",
+        user: MOCK_USERS[1],
+        type: "visited",
+        cafe: MOCK_CAFES[1],
+        timestamp: "2 hours ago",
+        likes: 45,
+        comments: 5,
+        image: "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=2600&auto=format&fit=crop"
+    },
+    {
+        id: "a3",
+        user: MOCK_USERS[3],
+        type: "review",
+        cafe: MOCK_CAFES[2],
+        timestamp: "Yesterday",
+        likes: 8,
+        comments: 0,
+        image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=2600&auto=format&fit=crop"
     }
 ];
 

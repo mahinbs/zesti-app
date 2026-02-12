@@ -1,6 +1,6 @@
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { ArrowLeft, MapPin, Minus, Plus, Share2, Star, Users, Utensils } from "lucide-react-native";
-import React from "react";
+import { ArrowLeft, Check, MapPin, MessageCircle, Minus, Plus, Share2, Star, Users, Utensils } from "lucide-react-native";
+import React, { useState } from "react";
 import { Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { Button } from "../../src/components/ui/Button";
 import { MOCK_CAFES } from "../../src/data/mockData";
@@ -10,6 +10,7 @@ export default function CafeDetailScreen() {
     const { id } = useLocalSearchParams();
     const router = useRouter();
     const cafe = MOCK_CAFES.find(c => c.id === id) || MOCK_CAFES[0]; // Fallback for dev
+    const [isFollowing, setIsFollowing] = useState(cafe.followed);
 
     return (
         <View className="flex-1 bg-white">
@@ -17,32 +18,92 @@ export default function CafeDetailScreen() {
             <StatusBar barStyle="light-content" />
 
             {/* Hero Image */}
-            <View className="h-72 w-full relative">
+            <View className="h-80 w-full relative">
                 <Image source={{ uri: cafe.image }} className="w-full h-full" resizeMode="cover" />
+                <View className="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-black/60 to-transparent" />
+
                 <View className="absolute top-12 left-5 z-10">
-                    <TouchableOpacity onPress={() => router.back()} className="bg-black/20 backdrop-blur-md p-3 rounded-full border border-white/10">
+                    <TouchableOpacity onPress={() => router.back()} className="bg-white/20 backdrop-blur-md p-2.5 rounded-full border border-white/20 active:bg-white/30">
                         <ArrowLeft color="white" size={24} />
                     </TouchableOpacity>
                 </View>
                 <View className="absolute top-12 right-5 z-10 flex-row gap-3">
-                    <TouchableOpacity className="bg-black/20 backdrop-blur-md p-3 rounded-full border border-white/10">
+                    <TouchableOpacity className="bg-white/20 backdrop-blur-md p-2.5 rounded-full border border-white/20 active:bg-white/30">
                         <Share2 color="white" size={22} />
                     </TouchableOpacity>
                 </View>
-                <View className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                <View className="absolute bottom-8 left-5 right-5">
-                    <Text className="text-3xl font-bold text-white tracking-tight leading-tight mb-2">{cafe.name}</Text>
-                    <View className="flex-row items-center gap-2">
-                        <View className="bg-white/20 backdrop-blur-md px-2 py-1 rounded-md flex-row items-center gap-1">
-                            <Star size={14} fill="#F59E0B" color="#F59E0B" />
-                            <Text className="text-white font-bold text-xs">{cafe.rating} (500+)</Text>
+
+                {/* Cafe Info Overlay */}
+                <View className="absolute bottom-0 w-full h-48 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
+                <View className="absolute bottom-10 left-5 right-5">
+                    <View className="flex-row justify-between items-end mb-3">
+                        <View className="flex-1 mr-4">
+                            <Text className="text-3xl font-bold text-white tracking-tight leading-tight mb-2 shadow-sm">{cafe.name}</Text>
+                            <View className="flex-row items-center gap-3">
+                                <View className="bg-white/20 backdrop-blur-md px-2 py-1 rounded-lg flex-row items-center gap-1 border border-white/10">
+                                    <Star size={14} fill="#F59E0B" color="#F59E0B" />
+                                    <Text className="text-white font-bold text-xs">{cafe.rating} (500+)</Text>
+                                </View>
+                                <Text className="text-white/80 text-sm font-medium shadow-sm">• {cafe.distance}</Text>
+                                <Text className="text-white/80 text-sm font-medium shadow-sm">• {cafe.followers} Followers</Text>
+                            </View>
                         </View>
-                        <Text className="text-white/80 text-sm font-medium">• {cafe.distance}</Text>
+                        <TouchableOpacity
+                            onPress={() => setIsFollowing(!isFollowing)}
+                            className={cn("px-4 py-2.5 rounded-full flex-row items-center gap-2 border shadow-lg transition-all", isFollowing ? "bg-transparent border-white/50" : "bg-white border-white")}
+                        >
+                            {isFollowing ? (
+                                <>
+                                    <Check size={16} color="white" />
+                                    <Text className="text-white font-bold text-xs uppercase tracking-wide">Following</Text>
+                                </>
+                            ) : (
+                                <>
+                                    <Plus size={16} color="#0EA5E9" />
+                                    <Text className="text-sky-500 font-bold text-xs uppercase tracking-wide">Follow</Text>
+                                </>
+                            )}
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
 
-            <ScrollView className="flex-1 -mt-4 bg-white rounded-t-[32px] pt-8 px-6" showsVerticalScrollIndicator={false}>
+            <ScrollView className="flex-1 -mt-6 bg-white rounded-t-[32px] pt-8 px-6" showsVerticalScrollIndicator={false}>
+
+                {/* Action Buttons */}
+                <View className="flex-row gap-4 mb-8">
+                    <Button
+                        className="flex-1 bg-slate-900 h-14 rounded-2xl flex-row justify-center items-center gap-2 shadow-lg shadow-slate-200"
+                        onPress={() => router.push("/group-order")}
+                    >
+                        <Users size={20} color="white" />
+                        <Text className="text-white font-bold text-base">Group Order</Text>
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className="flex-1 h-14 rounded-2xl flex-row justify-center items-center gap-2 border-slate-200 active:bg-slate-50"
+                        onPress={() => { }} // Chat logic here
+                    >
+                        <MessageCircle size={20} color="#0F172A" />
+                        <Text className="text-slate-900 font-bold text-base">Chat with Cafe</Text>
+                    </Button>
+                </View>
+
+                {/* Follower Context */}
+                {cafe.followed && (
+                    <View className="mb-8 flex-row items-center gap-3 bg-blue-50/50 p-3 rounded-2xl border border-blue-100">
+                        <View className="flex-row pl-2">
+                            {[1, 2, 3].map((_, i) => (
+                                <View key={i} className="w-8 h-8 rounded-full border-2 border-white bg-gray-200 -ml-2 overflow-hidden">
+                                    <Image source={{ uri: `https://i.pravatar.cc/150?u=${i + 10}` }} className="w-full h-full" />
+                                </View>
+                            ))}
+                        </View>
+                        <Text className="text-xs text-slate-600 font-medium flex-1">
+                            Followed by <Text className="font-bold text-slate-800">Sarah</Text>, <Text className="font-bold text-slate-800">Mike</Text> and 1.2k others
+                        </Text>
+                    </View>
+                )}
 
                 {/* Address */}
                 <View className="flex-row items-center gap-2 mb-8">
@@ -52,7 +113,7 @@ export default function CafeDetailScreen() {
 
                 {/* Loyalty Card */}
                 {cafe.loyaltyProgram && (
-                    <View className="relative overflow-hidden rounded-3xl p-6 shadow-xl shadow-blue-200">
+                    <View className="relative overflow-hidden rounded-3xl p-6 shadow-xl shadow-blue-200 mb-8">
                         {/* Gradient Background mockup using View since LinearGradient needs expo-linear-gradient */}
                         <View className="absolute inset-0 bg-blue-600" />
                         <View className="absolute -right-10 -top-10 bg-white/10 w-40 h-40 rounded-full blur-2xl" />
@@ -88,25 +149,9 @@ export default function CafeDetailScreen() {
                     </View>
                 )}
 
-                {/* Group Order Button */}
-                <Button
-                    className="mt-8 bg-slate-900 h-16 rounded-2xl flex-row justify-between items-center px-5 shadow-lg shadow-slate-200"
-                    onPress={() => router.push("/group-order")}
-                >
-                    <View className="flex-row items-center gap-3">
-                        <View className="bg-white/10 p-2 rounded-full">
-                            <Users size={20} color="white" />
-                        </View>
-                        <View>
-                            <Text className="text-white font-bold text-base">Group Order</Text>
-                            <Text className="text-gray-400 text-xs">Order together & save</Text>
-                        </View>
-                    </View>
-                    <ArrowLeft size={18} color="white" className="rotate-180" />
-                </Button>
 
                 {/* Menu Section */}
-                <View className="mt-10 mb-6 flex-row justify-between items-center">
+                <View className="mb-6 flex-row justify-between items-center">
                     <Text className="text-xl font-bold text-slate-800">Menu</Text>
                     <TouchableOpacity><Text className="text-blue-500 font-medium text-sm">Full Menu</Text></TouchableOpacity>
                 </View>
