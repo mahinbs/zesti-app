@@ -74,7 +74,7 @@ export default function CafeDetailScreen() {
                 <View className="flex-row gap-4 mb-8">
                     <Button
                         className="flex-1 bg-slate-900 h-14 rounded-2xl flex-row justify-center items-center gap-2 shadow-lg shadow-slate-200"
-                        onPress={() => router.push("/group-order")}
+                        onPress={() => alert("Group Order coming soon!")}
                     >
                         <Users size={20} color="white" />
                         <Text className="text-white font-bold text-base">Group Order</Text>

@@ -2,8 +2,8 @@ import { Stack, useRouter } from "expo-router";
 import { ArrowLeft, List, MapPin, Navigation } from "lucide-react-native";
 import React from "react";
 import { Image, StatusBar, Text, TouchableOpacity, View } from "react-native";
-import { Button } from "../src/components/ui/Button";
-import { MOCK_CAFES } from "../src/data/mockData";
+import { Button } from "../../src/components/ui/Button";
+import { MOCK_CAFES } from "../../src/data/mockData";
 
 export default function MapScreen() {
     const router = useRouter();
