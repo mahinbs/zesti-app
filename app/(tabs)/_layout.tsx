@@ -1,5 +1,5 @@
+import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { Chrome as Home, Map as MapIcon } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
 
@@ -15,8 +15,7 @@ export default function TabLayout() {
                     shadowOpacity: 0.1,
                     shadowRadius: 10,
                     shadowColor: '#000',
-                    height: 80,
-                    paddingBottom: 20,
+                    height: 60,
                     paddingTop: 10,
                     position: 'absolute',
                     bottom: 20,
@@ -34,7 +33,7 @@ export default function TabLayout() {
                 options={{
                     tabBarIcon: ({ color, focused }) => (
                         <View className={`items-center justify-center ${focused ? 'bg-blue-50 p-3 rounded-full' : ''}`}>
-                            <Home size={24} color={color} strokeWidth={focused ? 3 : 2} />
+                            <Ionicons name={focused ? "home" : "home-outline"} size={24} color={color} />
                         </View>
                     ),
                 }}
@@ -44,7 +43,7 @@ export default function TabLayout() {
                 options={{
                     tabBarIcon: ({ color, focused }) => (
                         <View className={`items-center justify-center ${focused ? 'bg-blue-50 p-3 rounded-full' : ''}`}>
-                            <MapIcon size={24} color={color} strokeWidth={focused ? 3 : 2} />
+                            <Ionicons name={focused ? "map" : "map-outline"} size={24} color={color} />
                         </View>
                     ),
                 }}
