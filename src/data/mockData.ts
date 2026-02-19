@@ -51,6 +51,10 @@ export interface Cafe {
     coverImage?: string;
     followers: number;
     followed: boolean;
+    tagline?: string;
+    isOpen?: boolean;
+    offer?: string;
+    followerImages?: string[];
     loyaltyProgram?: {
         type: "visits" | "points";
         target: number;
@@ -76,73 +80,68 @@ export const MOCK_USERS: User[] = [
 export const MOCK_CAFES: Cafe[] = [
     {
         id: "c1",
-        name: "The Grind Coffee Co.",
-        address: "123 Main St, Downtown",
-        distance: "0.8 km",
+        name: "Mumbai Chaat House",
+        address: "Street Flavor, Real Mumbai Taste", // Using address as tagline placement in design? No, address is usually location. The design has "Street Flavor..." as tagline.
+        distance: "0.3 km",
         rating: 4.8,
         followers: 1250,
-        followed: true,
-        image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=2600&auto=format&fit=crop",
+        followed: true, // UI shows "Follow" button
+        tagline: "Street Flavor, Real Mumbai Taste",
+        isOpen: false,
+        offer: "10% off chaats",
+        followerImages: [MOCK_USERS[0].avatar, MOCK_USERS[1].avatar, MOCK_USERS[2].avatar],
+        image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=2600&auto=format&fit=crop",
         loyaltyProgram: {
             type: "visits",
             target: 5,
             current: 3,
-            reward: "Free Coffee",
+            reward: "Free Chaat",
         },
         menu: [
             {
                 id: "f1",
-                name: "Caramel Macchiato",
+                name: "Pani Puri",
                 price: 180,
                 image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=2600&auto=format&fit=crop",
                 rating: 4.9,
                 reviews: 120,
-                tags: ["Coffee", "Sweet"],
+                tags: ["Spicy", "Street Food"],
                 socialProof: {
                     type: "friends",
                     message: "Sarah & 2 others ordered this",
                     users: [MOCK_USERS[0], MOCK_USERS[1]]
-                }
-            },
-            {
-                id: "f2",
-                name: "Avocado Toast",
-                price: 250,
-                image: "https://images.unsplash.com/photo-1603046891744-1f76eb10aec1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2600&q=80",
-                rating: 4.5,
-                reviews: 85,
-                tags: ["Breakfast", "Healthy"],
-                socialProof: {
-                    type: "trending",
-                    message: "Trending in your area",
                 }
             }
         ]
     },
     {
         id: "c2",
-        name: "Burger & Brew",
-        address: "456 Market Rd",
-        distance: "1.5 km",
+        name: "Tandoori Junction",
+        address: "Smoky Grills, Bold Spices",
+        distance: "0.4 km",
         rating: 4.6,
-        followers: 890,
+        followers: 1020,
         followed: false,
-        image: "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=2600&auto=format&fit=crop",
+        tagline: "Smoky Grills, Bold Spices",
+        isOpen: false,
+        offer: "Free naan",
+        followerImages: [MOCK_USERS[1].avatar, MOCK_USERS[2].avatar, MOCK_USERS[3].avatar],
+        image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2600&auto=format&fit=crop",
         loyaltyProgram: {
             type: "points",
             target: 500,
             current: 250,
-            reward: "Free Burger",
+            reward: "Free Tandoori Chicken",
         },
         menu: [
             {
                 id: "f3",
-                name: "Classic Cheeseburger",
+                name: "Butter Chicken",
                 price: 350,
                 image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=2600&auto=format&fit=crop",
                 rating: 4.7,
                 reviews: 210,
-                tags: ["Burger", "Lunch"],
+                tags: ["Curry", "Lunch"],
                 socialProof: {
                     type: "popular",
                     message: "Most ordered today",
@@ -152,19 +151,53 @@ export const MOCK_CAFES: Cafe[] = [
     },
     {
         id: "c3",
-        name: "Sushi Zen",
-        address: "789 Park Ave",
-        distance: "2.2 km",
+        name: "Dosa Delight",
+        address: "Crispy, Golden, Perfect",
+        distance: "0.5 km",
         rating: 4.9,
-        followers: 2100,
+        followers: 900,
         followed: true,
-        image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=2600&auto=format&fit=crop",
+        tagline: "Crispy, Golden, Perfect.",
+        isOpen: false,
+        offer: "₹20 off dosas",
+        followerImages: [MOCK_USERS[2].avatar, MOCK_USERS[3].avatar, MOCK_USERS[0].avatar],
+        image: "https://images.unsplash.com/photo-1589301760576-416cd6a8e57e?q=80&w=2600&auto=format&fit=crop",
         loyaltyProgram: {
             type: "visits",
             target: 10,
             current: 1,
-            reward: "Free Sushi Roll",
+            reward: "Free Masala Dosa",
         },
+        menu: []
+    },
+    {
+        id: "c4",
+        name: "Punjabi Dhaba",
+        address: "Desi Comfort, Unlimited Flavour",
+        distance: "0.6 km",
+        rating: 4.7,
+        followers: 1530,
+        followed: false,
+        tagline: "Desi Comfort, Unlimited Flavour",
+        isOpen: false,
+        offer: "10% off everything",
+        followerImages: [MOCK_USERS[3].avatar, MOCK_USERS[0].avatar, MOCK_USERS[1].avatar],
+        image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=2600&auto=format&fit=crop",
+        menu: []
+    },
+    {
+        id: "c5",
+        name: "Delhi Biryani Corner",
+        address: "Layers of Royal Taste",
+        distance: "0.7 km",
+        rating: 4.8,
+        followers: 1580,
+        followed: true,
+        tagline: "Layers of Royal Taste",
+        isOpen: false,
+        offer: "₹30 off biryanis",
+        followerImages: [MOCK_USERS[0].avatar, MOCK_USERS[1].avatar, MOCK_USERS[2].avatar],
+        image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=2600&auto=format&fit=crop",
         menu: []
     }
 ];
